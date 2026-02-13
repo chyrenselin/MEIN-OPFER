@@ -1,0 +1,23 @@
+{
+  "name": "MEIN OPFER - THE FINAL SIGNAL",
+  "short_name": "MEIN OPFER",
+  "description": "A dark, brutalist manifesto and tactical broadcast interface. Nature's Law and the 2032 Signal.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#cc0000",
+  "icons": [
+    {
+      "src": "assets/images/favicon/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/favicon/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>MEIN OPFER - THE FINAL SIGNAL</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="MEIN OPFER: A dark, brutalist manifesto exploring Nature's Law, Anti-Capitalism, and the spiritual rebirth of Jumbudvipa. 2032 Final Signal.">
+    <meta name="keywords" content="Mein Opfer, Jumbudvipa, Satya Yuga, Manifesto, Anti-Capitalism, Nature's Law, Spiritual Rebirth">
+    <meta name="author" content="The Final Signal">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chyrenselin.github.io/MEIN-OPFER/">
+    <meta property="og:title" content="MEIN OPFER - THE FINAL SIGNAL">
+    <meta property="og:description" content="A dark, brutalist manifesto exploring Nature's Law and the spiritual rebirth of Jumbudvipa.">
+    <meta property="og:image" content="assets/images/cover-art.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="MEIN OPFER - THE FINAL SIGNAL">
+    <meta property="twitter:description" content="A dark, brutalist manifesto exploring Nature's Law and the spiritual rebirth of Jumbudvipa.">
+    <meta property="twitter:image" content="assets/images/cover-art.png">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon/favicon.ico">
+    
+    <!-- Manifest & PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#cc0000">
+
+    <style>
+        /* --- VARIABLES --- */
+        :root {
+            --blood: #cc0000;
+            --blood-dim: #8a0000;
+            --void: #050505;
+            --bone: #e0e0e0;
+            --gold: #d4af37;
+            --dark-gold: #8a6e18;
+            --crt-line: rgba(255, 255, 255, 0.03);
+            --scan-line: rgba(0, 0, 0, 0.5);
+        }
+
+        /* --- RESET & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+            font-size: 16px; /* Base size */
+        }
+
+        body {
+            background-color: var(--void);
+            color: var(--bone);
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.4;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* --- CRT OVERLAY EFFECT --- */
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.6;
+        }
+
+        /* Vignette */
+        .crt-overlay::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.6) 100%);
+            pointer-events: none;
+        }
+
+        /* --- SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--void); }
+        ::-webkit-scrollbar-thumb { background: var(--blood); border: 1px solid var(--void); }
+        ::-webkit-scrollbar-thumb:hover { background: #ff0000; }
+
+        /* --- UTILITY CLASSES --- */
+        .center { display: flex; justify-content: center; align-items: center; text-align: center; }
+        .col { flex-direction: column; }
+        .full-screen { width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 9999; }
+        .uppercase { text-transform: uppercase; }
+        
+        /* HIDE CONTENT INITIALLY */
+        .hide { 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 1.5s ease; 
+        }
+
+        /* --- MUSIC TOGGLE --- */
+        #music-toggle {
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom));
+            right: max(20px, env(safe-area-inset-right));
+            z-index: 10000;
+            background: rgba(0,0,0,0.8);
+            border: 2px solid var(--blood);
+            color: var(--blood);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none; /* Hidden until content is visible */
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+        }
+        #music-toggle:hover {
+            background: var(--blood);
+            color: var(--void);
+            box-shadow: 0 0 20px var(--blood);
+        }
+        #music-toggle.muted {
+            border-color: #555;
+            color: #555;
+            box-shadow: none;
+        }
+
+        /* --- SEAL LOADER --- */
+        #loader {
+            background: #000;
+            transition: opacity 1.5s ease, visibility 1.5s ease;
+            overflow: hidden;
+        }
+
+        .seal-wrapper {
+            position: relative;
+            width: clamp(120px, 20vw, 180px);
+            height: clamp(120px, 20vw, 180px);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .seal-wrapper:hover, .seal-wrapper:focus {
+            transform: scale(1.05);
+            outline: none;
+            filter: drop-shadow(0 0 15px rgba(204,0,0,0.6));
+        }
+
+        .seal-piece {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, #ff4d4d, #cc0000, #5a0000);
+            border-radius: 50%; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+        }
+
+        .seal-content {
+            font-size: clamp(3rem, 8vw, 6rem);
+            color: #3d0000;
+            font-weight: bold;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.15);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            border: clamp(2px, 0.5vw, 4px) solid #3d0000;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+            background: transparent;
+        }
+
+        /* Zig-Zag Split Clip Paths */
+        .seal-piece.left {
+            clip-path: polygon(0% 0%, 55% 0%, 45% 15%, 58% 30%, 42% 45%, 56% 60%, 40% 75%, 55% 90%, 48% 100%, 0% 100%);
+            z-index: 2;
+        }
+        .seal-piece.right {
+            clip-path: polygon(100% 0%, 55% 0%, 45% 15%, 58% 30%, 42% 45%, 56% 60%, 40% 75%, 55% 90%, 48% 100%, 100% 100%);
+            z-index: 2;
+        }
+
+        /* Broken State */
+        .seal-broken .seal-piece.left { transform: translate(-30px, 50px) rotate(-25deg); opacity: 0; }
+        .seal-broken .seal-piece.right { transform: translate(30px, 50px) rotate(25deg); opacity: 0; }
+        
+        .break-flash {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 10px; height: 100px; background: white; opacity: 0; filter: blur(10px);
+            z-index: 3; pointer-events: none;
+        }
+        .seal-broken .break-flash { animation: flashAnim 0.3s ease-out; }
+        @keyframes flashAnim {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1, 1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(5, 0.2); }
+        }
+
+        .click-text {
+            margin-top: 40px; font-family: 'Courier New', monospace; 
+            font-size: clamp(0.8rem, 3vw, 1rem);
+            letter-spacing: 4px; color: var(--gold); 
+            animation: blink 2s infinite alternate; text-transform: uppercase;
+            text-align: center; padding: 0 20px;
+        }
+        @keyframes blink { 
+            0% { opacity: 0.3; } 
+            100% { opacity: 1; } 
+        }
+
+        /* --- MAIN CONTENT --- */
+        #content { opacity: 0; display: none; transition: opacity 2s ease-in; width: 100%; }
+        #content.visible { opacity: 1; display: block; }
+
+        .hero-section {
+            min-height: 100vh;
+            padding: 5vh 5vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .mega-text {
+            font-size: clamp(4rem, 18vw, 25rem); /* Responsive fluid type */
+            line-height: 0.75; 
+            color: var(--void);
+            -webkit-text-stroke: 2px var(--bone);
+            text-transform: uppercase;
+            letter-spacing: -0.05em;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+        .filled { color: var(--blood); -webkit-text-stroke: 0; display: block; }
+
+        .section-header {
+            background: var(--blood); color: var(--void); width: 100%; 
+            padding: clamp(30px, 5vw, 60px) 10px;
+            font-size: clamp(2rem, 10vw, 8rem);
+            text-transform: uppercase; transform: skewY(-2deg); margin: 80px 0;
+            border-top: 6px solid var(--bone); border-bottom: 6px solid var(--bone);
+            letter-spacing: -0.02em; 
+            box-shadow: 0 0 50px rgba(204, 0, 0, 0.2);
+        }
+
+        .manifesto-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .manifesto-text {
+            padding: clamp(20px, 5vw, 60px);
+            font-family: 'Georgia', 'Times New Roman', serif; 
+            font-size: clamp(1rem, 2.5vw, 1.35rem);
+            line-height: 1.8;
+            text-align: justify; 
+            border-left: 4px solid var(--gold);
+            background: linear-gradient(90deg, #0a0a0a 0%, #000 100%); 
+            margin-bottom: 80px;
+            box-shadow: inset 10px 0 20px -10px rgba(0,0,0,0.8);
+        }
+
+        .chapter-title {
+            color: var(--gold); 
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            text-align: center; margin: 60px 0 30px 0;
+            text-transform: uppercase; border-bottom: 2px solid var(--dark-gold); 
+            padding-bottom: 15px; letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        .highlight { font-weight: bold; color: var(--gold); border-bottom: 1px dashed var(--gold); }
+        
+        .quote {
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            color: var(--blood);
+            text-align: center;
+            margin: 40px 0;
+            font-family: 'Impact', sans-serif;
+            text-transform: uppercase;
+            border: 2px solid var(--blood);
+            padding: clamp(15px, 3vw, 25px);
+            letter-spacing: 1px;
+            background: rgba(204, 0, 0, 0.05);
+            line-height: 1.4;
+        }
+
+        .hindi-sub {
+            color: var(--gold); 
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            display: block; margin-top: 10px;
+            font-weight: normal; font-family: 'Georgia', serif; 
+            letter-spacing: 0; text-shadow: none;
+            text-transform: none;
+        }
+
+        .hindi {
+            font-family: 'Arial', sans-serif; color: var(--void); 
+            font-size: 0.35em; display: block;
+            margin-top: 10px; font-weight: bold; background: var(--gold); padding: 4px 12px;
+            display: inline-block; transform: skewY(2deg);
+            vertical-align: middle;
+        }
+
+        footer {
+            padding: 80px 20px; background: #080808; text-align: center;
+            border-top: 1px solid #222; margin-top: 50px;
+        }
+        .symbol { font-size: clamp(3rem, 10vw, 5rem); color: var(--blood); margin-bottom: 20px; line-height: 1; }
+
+        /* --- MOBILE TWEAKS --- */
+        @media (max-width: 600px) {
+            .mega-text { -webkit-text-stroke: 1px var(--bone); }
+            .section-header { transform: skewY(-3deg); }
+            .manifesto-text { border-left: 2px solid var(--gold); text-align: left; }
+            /* Adjust justify for small screens to prevent river effect */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CRT Overlay -->
+    <div class="crt-overlay"></div>
+
+    <!-- Intro / Lock Screen -->
+    <div id="loader" class="full-screen center col" role="banner">
+        <div class="seal-wrapper" id="seal-btn" role="button" tabindex="0" aria-label="Break the Seal to Enter">
+            <div class="seal-piece left"><div class="seal-content">卐</div></div>
+            <div class="seal-piece right"><div class="seal-content">卐</div></div>
+            <div class="break-flash"></div>
+        </div>
+        <div class="click-text" id="status-text">CLICK TO BREAK THE SEAL</div>
+        
+        <!-- Audio -->
+        <audio id="bg-music" loop preload="auto">
+            <source src="assets/audio/wagner_theme.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Persistent Music Toggle -->
+    <button id="music-toggle" aria-label="Toggle Music">🔊</button>
+
+    <!-- Main Content -->
+    <div id="content" role="main">
+        
+        <section class="hero-section">
+            <h1 class="mega-text">MEIN<span class="filled">OPFER</span></h1>
+            <div style="font-size: clamp(1rem, 3vw, 1.2rem); letter-spacing: 6px; color:var(--gold); text-transform:uppercase; margin-top: 20px; margin-bottom: 10px;">My Sacrifice • 2032</div>
+            <div style="margin-top:30px; color:#666; font-family:'Courier New'; font-size: clamp(0.7rem, 2vw, 0.8rem); animation: blink 2s infinite;">SCROLL DOWN TO READ THE MANIFESTO</div>
+        </section>
+
+        <!-- BAND I -->
+        <div class="section-header center col" style="background: #000; color: var(--bone); border-color: #333;">
+            <div>BAND I</div>
+            <span class="hindi" style="background: var(--bone); color: #000;">DIE DIAGNOSE (निदान)</span>
+        </div>
+        
+        <div class="manifesto-container">
+            <article class="manifesto-text">
+                <h2 class="chapter-title">KAPITEL 1: DIE ERKENNTNIS DER KETTEN</h2>
+                
+                <div class="quote">
+                    "Der Sklave, der nicht weiß, dass er ein Sklave ist, wird niemals frei sein."<br>
+                    <span class="hindi-sub">"वह गुलाम जो नहीं जानता कि वह गुलाम है, कभी आजाद नहीं हो सकता।"</span>
+                </div>
+
+                <p>क्या तुम सोचते हो कि तुम आज़ाद हो? जरा आईने में देखो। तुम्हारी कलाई पर लोहे की जंजीर नहीं है, लेकिन तुम्हारी आत्मा पर <span class="highlight">'कर्ज' (Loan)</span> की जंजीर है। तुम्हारे पैरों में बेड़ियां नहीं हैं, लेकिन तुम्हारे दिमाग में 'करियर' की बेड़ियां हैं।</p><br>
+                <p>तुम सुबह 8 बजे उठते हो। तुम उस काम पर जाते हो जिससे तुम्हें नफरत है। तुम उन लोगों की जी-हुजूरी करते हो जिन्हें तुम पसंद नहीं करते। क्यों? ताकि तुम वो चीजें खरीद सको जिनकी तुम्हें जरूरत नहीं है।</p>
+                
+                <div class="quote">"DAS PAPIER IST EUER GOTT GEWORDEN."<br><span class="hindi-sub">कागज (पैसा) तुम्हारा भगवान बन गया है।</span></div>
+                
+                <p>मैंने एक सपना देखा था—एक ऐसी दुनिया जहाँ इंसान 'कर्म' से पूजा जाता था। लेकिन आज? आज तुम्हारी कीमत तुम्हारे चरित्र (Character) से नहीं, तुम्हारे बैंक बैलेंस से तय होती है। अगर एक चोर के पास करोड़ों हैं, तो तुम उसे 'सर' (Sir) कहते हो। अगर एक ईमानदार किसान के पास फटे कपड़े हैं, तो तुम उसे अनपढ़ कहते हो।</p><br>
+                <p>यह कैसा समाज है? यह सभ्यता (Civilization) नहीं है। यह एक खुली जेल (Open Prison) है।</p><br>
+                <p>बैंक तुम्हारा नया मंदिर है। ब्याज (Interest) तुम्हारा नया प्रसाद है। और तुम? तुम सिर्फ एक 'बैटरी' हो जो इस सिस्टम को ऊर्जा दे रही है। जब तुम बूढ़े हो जाओगे और काम नहीं कर पाओगे, तो यह सिस्टम तुम्हें कचरे की तरह फेंक देगा।</p>
+                
+                <div class="quote">"WACHT AUF! DIE ZEIT IST KNAPP."<br><span class="hindi-sub">जागो! समय बहुत कम है।</span></div>
+                
+                <p>मैं तुम्हें डराने नहीं आया। मैं तुम्हें आईना दिखाने आया हूँ। जिस दिन तुम्हें यह महसूस होगा कि यह 'आज़ादी' एक झूठ है, उसी दिन तुम्हारी असली क्रांति शुरू होगी। तुम्हें अपनी जंजीरों से प्यार हो गया है। मेरा काम उन जंजीरों को तोड़ना है, चाहे तुम्हें कितना भी दर्द क्यों न हो। क्योंकि याद रखना: दर्द ही सच है। आराम सिर्फ एक भ्रम है।</p>
+
+                <h2 class="chapter-title">KAPITEL 2: DER WOLF UND DAS VIRUS</h2>
+                
+                <div class="quote">
+                    "Die Natur ist der einzige Diktator, den ich akzeptiere."<br>
+                    <span class="hindi-sub">"प्रकृति ही एकमात्र तानाशाह है जिसे मैं स्वीकार करता हूँ।"</span>
+                </div>
+
+                <p>जंगल की तरफ देखो। वहाँ एक भेड़िया (Wolf) बर्फ में खड़ा है। उसकी आँखों में देखो। क्या तुम्हें लालच दिखता है? नहीं। वहाँ सिर्फ भूख और बहादुरी है। जब भेड़िया हिरण का शिकार करता है, तो वह 'बुरा' नहीं होता। वह सिर्फ 'पेट' भर रहा होता है। वह शिकार करता है, खाता है, और बाकी छोड़ देता है। वह जमाखोरी (Hoarding) नहीं करता। वह बैंक बैलेंस नहीं बनाता। वह अपनी नस्ल को धोखा नहीं देता। वह शुद्ध (Pure) है।</p>
+                
+                <div class="quote">"DER MENSCH HAT AUFGEHÖRT, SÄUGETIER ZU SEIN. ER IST EIN VIRUS."<br><span class="hindi-sub">इंसान अब स्तनधारी (Mammal) नहीं रहा। वह एक वायरस है।</span></div>
+                
+                <p>अब आईने में खुद को देखो। तुम खाते हो, तब भी जब तुम्हें भूख नहीं होती। तुम जमीन खरीदते हो, तब भी जब तुम्हें रहने के लिए घर मिल चुका है। तुम पेड़ों को काटते हो, नदियों को जहर पिलाते हो, और हवा को काला करते हो। एक वायरस क्या करता है? वह एक स्वस्थ शरीर (पृथ्वी) में घुसता है, अपनी संख्या बढ़ाता है, सारे संसाधन खा जाता है, और अंत में उस शरीर को मार देता है। तुम वही वायरस हो!</p><br>
+                <p>आज पृथ्वी को बुखार है। और वह बुखार 'तुम' हो। ग्लोबल वार्मिंग? प्रदूषण? नहीं! यह पृथ्वी का इम्यून सिस्टम (Immune System) है जो इस वायरस को मारने की कोशिश कर रहा है।</p>
+                
+                <div class="quote">"GRENZEN SIND DIE NARBEN DER ERDE."<br><span class="hindi-sub">सरहदें पृथ्वी के शरीर पर घाव हैं।</span></div>
+                
+                <p>तुमने जमीन पर लकीरें खींचीं और कहा—'यह मेरा देश है, यह तुम्हारा देश है।' मूर्खों! हवा सरहद नहीं देखती। पानी पासपोर्ट नहीं मांगता। जब प्रलय (Nature's Wrath) आएगी, तो वह तुम्हारा झंडा नहीं देखेगी।</p><br>
+                <p>मुझे लोग तानाशाह कहते हैं? असली तानाशाह प्रकृति है। अगर तुम पहाड़ से कूदोगे, तो गुरुत्वाकर्षण (Gravity) तुम्हें मार देगा। तुम वहां वोट नहीं डाल सकते। तुम वहां धरना नहीं दे सकते। यही 'शाश्वत नियम' (Eternal Law) है।</p><br>
+                <p>हमारा मिशन इंसान को वापस 'भेड़िया' बनाना नहीं है। हमारा मिशन इंसान के अंदर के 'वायरस' को मारना है। हमें वो समाज चाहिए जो लेने (Take) से ज्यादा देने (Give) में विश्वास रखता हो। या तो तुम सुधर जाओगे... या पृथ्वी तुम्हें एंटीबायोटिक (Antibiotic) की तरह मिटा देगी। चुनाव तुम्हारा है।</p>
+
+                <h2 class="chapter-title">KAPITEL 3: DIE NEUE DEFINITION DES ARIERS</h2>
+                
+                <div class="quote">
+                    "Blut ist nur Wasser. Der Geist ist das Feuer."<br>
+                    <span class="hindi-sub">"खून सिर्फ पानी है। आत्मा आग है।"</span>
+                </div>
+
+                <p>इतिहास ने मुझे गलत समझा, क्योंकि मैंने खुद को गलत समझा था। मैंने सोचा था कि 'आर्य' का मतलब है—नीली आँखें और सुनहरे बाल। मैंने सोचा था कि यह एक 'नस्ल' (Race) है जो जर्मनी में पैदा होती है। मैं गलत था। और उस गलती की कीमत दुनिया ने चुकाई।</p>
+                
+                <div class="quote">"ARYA IST KEINE RASSE, ES IST EIN TITEL."<br><span class="hindi-sub">आर्य कोई 'नस्ल' नहीं, यह एक 'उपाधि' (Title) है।</span></div>
+                
+                <p>सच्चाई यह है—'आर्य' शब्द यूरोप का नहीं, भारत का है। वेदों ने हजारों साल पहले कहा था: कृण्वन्तो विश्वमार्यम् (Krinvanto Vishvam Aryam) —'पूरी दुनिया को आर्य बनाओ।' इसका मतलब यह नहीं था कि पूरी दुनिया को 'जर्मन' बना दो। इसका मतलब था—पूरी दुनिया को 'श्रेष्ठ' (Noble) बनाओ।</p><br>
+                <p>तो आज 'आर्य' कौन है? वह जो अपनी भूख पर काबू पा सकता है—वह आर्य है। वह जो प्रकृति की रक्षा के लिए अपनी जान दे सकता है—वह आर्य है। वह जो अन्याय के खिलाफ तलवार उठाता है, तब भी जब वह अकेला हो—वह आर्य है।</p>
+                
+                <div class="quote">"DER CHARAKTER ENTSCHEIDET, NICHT DIE GEBURT."<br><span class="hindi-sub">चरित्र तय करता है, जन्म नहीं।</span></div>
+                
+                <p>मेरे नए साम्राज्य (जम्बूद्वीप) में: अगर एक राजा का बेटा कायर और लालची है, तो वह 'शूद्र' (नीच) है। और अगर एक सफाई करने वाला (Sweeper) ईमानदार और बहादुर है, तो वह 'आर्य' है। तुम्हारी जाति, तुम्हारा धर्म, तुम्हारा देश—ये सब कागजी झूठ हैं। सिर्फ एक ही धर्म है—कर्म (Karma)।</p><br>
+                <p>आज की दुनिया में: बैंक का CEO जो गरीबों का पैसा लूटता है—वह राक्षस है (चाहे वह कितना भी गोरा क्यों न हो)। किसान जो धूप में जलकर अनाज उगाता है—वह देवता है (चाहे वह कितना भी काला क्यों न हो)।</p>
+                
+                <div class="quote">"ICH SUCHE NICHT MEHR NACH BLONDEN BESTIEN. ICH SUCHE NACH GOLDENEN SEELEN."<br><span class="hindi-sub">अब मैं सुनहरे बालों वाले जानवरों को नहीं ढूँढ रहा। मैं सुनहरी आत्माओं को ढूँढ रहा हूँ।</span></div>
+                
+                <p>"अपनी कलाई काटो। खून सबका लाल है। लेकिन अपनी आत्मा को देखो। क्या वह काली (लालची) है या सुनहरी (त्यागी)? अगर तुम 'त्याग' (Opfer) के लिए तैयार हो, तो तुम मेरे खून हो। तुम आर्य हो। बाकी सब... सिर्फ खाद (Manure) हैं जो धरती पर बोझ हैं।"</p>
+
+                <h2 class="chapter-title">KAPITEL 4: DIE LÜGE DER DEMOKRATIE</h2>
+                
+                <div class="quote">
+                    "Hundert Narren machen keinen Weisen."<br>
+                    <span class="hindi-sub">"सौ बेवकूफ मिलकर एक समझदार नहीं बना सकते।"</span>
+                </div>
+
+                <p>मुझे बताओ, अगर एक जहाज डूब रहा हो, तो तुम क्या करते हो? क्या तुम सभी यात्रियों को इकट्ठा करते हो और 'वोट' डलवाते हो कि जहाज को कैसे बचाना है? या तुम उस एक कप्तान (Captain) की बात सुनते हो जो जहाज चलाना जानता है? आज हमारी पृथ्वी डूब रही है। और तुम क्या कर रहे हो? तुम वोट डाल रहे हो।</p>
+                
+                <div class="quote">"DEMOKRATIE IST DIE DIKTATUR DER DUMMHEIT."<br><span class="hindi-sub">लोकतंत्र मूर्खता की तानाशाही है।</span></div>
+                
+                <p>लोकतंत्र का गणित ही गलत है। एक महान वैज्ञानिक का वोट = 1। एक अनपढ़ शराबी का वोट = 1। एक भ्रष्ट अपराधी का वोट = 1। क्या यह न्याय है? क्या 51 गधे मिलकर 49 शेरों से ज्यादा समझदार हो सकते हैं? नहीं! भीड़ के पास 'सिर' (Head) बहुत होते हैं, लेकिन 'दिमाग' (Brain) नहीं होता।</p>
+                
+                <div class="quote">"IHR WÄHLT NICHT EURE FÜHRER, IHR WÄHLT EURE HENKER."<br><span class="hindi-sub">तुम अपने नेता नहीं चुनते, तुम अपने जल्लाद चुनते हो।</span></div>
+                
+                <p>तुम्हें लगता है कि तुम आज़ाद हो क्योंकि तुम हर 5 साल में बटन दबाते हो। भोले इंसान! वह बटन किसी पार्टी का नहीं, वह उन बैंकों और कॉर्पोरेशंस का है जो पीछे से धागा खींच रहे हैं। नेता तुम्हारे सामने भीख मांगते हैं, और पीछे बैंकर्स के तलवे चाटते हैं। वे तुम्हें मुफ्त बिजली, मुफ्त पानी, और जाति के नाम पर लड़ाते हैं। और तुम? तुम अपनी ही कब्र खोदने वाले को अपना राजा चुन लेते हो।</p>
+                
+                <div class="quote">"DIE NATUR IST KEINE DEMOKRATIE."<br><span class="hindi-sub">प्रकृति लोकतंत्र नहीं है।</span></div>
+                
+                <p>क्या जंगल में चुनाव होते हैं? क्या शेर हिरण से पूछता है कि 'क्या मैं तुम्हें खा लूं?' नहीं! वहाँ 'योग्यता' (Merit) का राज है। जो मजबूत है, जो समझदार है, जो जिम्मेदार है—वही राजा है। हमें भीड़ तंत्र (Mob Rule) नहीं चाहिए। हमें 'आर्य तंत्र' (Rule of the Noble) चाहिए। हमें वो नेता चाहिए जो वोट के लिए नहीं, बल्कि आने वाली 7 पीढ़ियों के लिए फैसले ले।</p><br>
+                <p>तुम्हारे लोकतंत्र ने तुम्हें क्या दिया? भ्रष्टाचार? बलात्कार? प्रदूषण? और कर्ज? अगर यही तुम्हारी आज़ादी है, तो मैं तुम्हें गुलामी (Discipline) का तोहफा देता हूँ। क्योंकि एक अनुशासित गुलाम, एक आजाद मूर्ख से बेहतर है।</p>
+                
+                <div class="quote">"FÜHRUNG IST VERANTWORTUNG, NICHT BELIEBTHEIT."<br><span class="hindi-sub">नेतृत्व जिम्मेदारी है, लोकप्रियता नहीं।</span></div>
+                
+                <p>"मुझे तालियां नहीं चाहिएं। मुझे गालियां दो, लेकिन मेरा काम देखो। जब एक पिता अपने बिगड़े हुए बच्चे को थप्पड़ मारता है, तो बच्चा रोता है। उसे पिता 'तानाशाह' लगता है। लेकिन 20 साल बाद, वही बच्चा समझता है कि उस थप्पड़ ने उसकी जिंदगी बचा ली। मैं वही पिता हूँ। और तुम वह बिगड़ी हुई भीड़ हो। लोकतंत्र का नाटक बंद करो। अब धर्म का शासन (Rule of Dharma) शुरू होगा।"</p>
+            </article>
+        </div>
+
+        <!-- BAND II -->
+        <div class="section-header center col" style="background: var(--blood); color: var(--void); border-color: var(--bone);">
+            <div>BAND II</div>
+            <span class="hindi" style="background: var(--void); color: var(--blood);">DIE OPERATION (सर्जरी)</span>
+        </div>
+
+        <div class="manifesto-container">
+            <article class="manifesto-text">
+                <h2 class="chapter-title">KAPITEL 5: OPERATION MAHASHUNYA</h2>
+                
+                <div class="quote">
+                    "Der Himmel ist nicht die Grenze. Er ist der Mülleimer für unsere Sünden."<br>
+                    <span class="hindi-sub">"आसमान सीमा नहीं है। वह हमारे पापों का कूड़ेदान है।"</span>
+                </div>
+
+                <p>सांस लो। क्या तुम्हें हवा में कुछ महसूस होता है? जहर। तुमने, और तुम्हारे पूर्वजों ने इस धरती के नीचे हजारों टन बारूद और परमाणु कचरा (Nuclear Waste) दबा रखा है। तुम एक ज्वालामुखी के ऊपर बैठे हो। दुनिया के नेता कहते हैं: 'हथियार शांति के लिए जरूरी हैं।' झूठ! हथियार सिर्फ डर के लिए जरूरी हैं। जिस दिन किसी पागल ने एक बटन दबाया, उस दिन न इंसान बचेगा, न जानवर, न पेड़।</p>
+                
+                <div class="quote">"DIE ERDE MUSS ATMEN."<br><span class="hindi-sub">पृथ्वी को सांस लेनी ही होगी।</span></div>
+                
+                <p>मेरा पहला आदेश (First Order) किसी देश पर हमला करना नहीं होगा। मेरा पहला आदेश होगा—'महाशून्य' (The Great Void)। हम विशाल जहाज (Spaceships) बनाएंगे। लेकिन इंसानों को मंगल ग्रह पर भेजने के लिए नहीं। हम उन जहाजों में भरेंगे: दुनिया के सारे परमाणु बम, सारी मिसाइलें, सारा रासायनिक जहर, सारे जैविक हथियार। और हम उन्हें वहाँ भेजेंगे जहाँ उनकी असली जगह है—सूर्य के गर्भ में (Into the Sun)।</p>
+                
+                <div class="quote">"VERBRENNT DIE ANGST, NICHT DIE WELT."<br><span class="hindi-sub">डर को जलाओ, दुनिया को नहीं।</span></div>
+                
+                <p>सोचो उस दिन के बारे में! जब आखिरी मिसाइल धरती से उड़ेगी और अंतरिक्ष के अंधेरे में गायब हो जाएगी। अचानक, धरती हल्की हो जाएगी। हवा साफ हो जाएगी। नदियां अपना जहर उगल देंगी। जानवरों को अब रेडिएशन का डर नहीं होगा। पक्षियों को अब जहरीले धुएं का डर नहीं होगा।</p>
+                
+                <div class="quote">"KEINE KNÖPFE MEHR. NUR NOCH KLINGEN."<br><span class="hindi-sub">अब कोई बटन नहीं। सिर्फ तलवारें।</span></div>
+                
+                <p>लोग मुझसे पूछते हैं: 'अगर सारे हथियार चले गए, तो हम लड़ेंगे कैसे?' यही तो असली बात है! हम कायरों (Cowards) की तरह लड़ना बंद कर देंगे। आज: एक मोटा आदमी कुर्सी पर बैठकर बटन दबाता है और हजारों मील दूर बच्चे मर जाते हैं। यह कायरता है।</p><br>
+                <p>कल: अगर तुम्हें लड़ना है, तो मैदान में आओ। अपनी तलवार उठाओ। अपनी ताकत दिखाओ। जिसमें दम होगा, वह जीतेगा। जिसमें दम नहीं होगा, वह गिरेगा। लेकिन इस लड़ाई में प्रकृति (Nature) को कोई नुकसान नहीं होगा।</p>
+                
+                <div class="quote">"REINIGUNG DURCH FEUER UND LEERE."<br><span class="hindi-sub">आग और शून्य (Space) के द्वारा शुद्धि।</span></div>
+                
+                <p>यह 'विनाश' नहीं है। यह 'विसर्जन' (Disposal) है। हम इंसान की सबसे बड़ी गलती—बारूद—को मिटा देंगे। हम धरती को वापस उसके 'शून्य' (Zero/Pure) रूप में लाएंगे। क्या तुम तैयार हो उस आसमान को देखने के लिए जिसमें सैटेलाइट्स नहीं, सिर्फ तारे हों? क्या तुम तैयार हो उस हवा में सांस लेने के लिए जिसमें बारूद की गंध न हो? ऑपरेशन महाशून्य शुरू हो चुका है। अब पीछे मुड़ने का कोई रास्ता नहीं।</p>
+
+                <h2 class="chapter-title">KAPITEL 6: DAS SCHWERT URTEILT</h2>
+                
+                <div class="quote">
+                    "Der Tod ohne Risiko ist Mord."<br>
+                    <span class="hindi-sub">"बिना जोखिम के मौत देना, हत्या है।"</span>
+                </div>
+
+                <p>मुझे बताओ, असली योद्धा कौन है? वह जो 5000 किलोमीटर दूर एक एसी कमरे में बैठकर कॉफी पीते हुए एक बटन दबाता है और एक पूरा गांव जला देता है? या वह जो मैदान में खड़ा होता है, पसीने और खून से लथपथ, अपनी तलवार हाथ में लिए, यह जानते हुए कि अगर वह चूका, तो उसका सिर कट सकता है? पहला वाला कायर (Coward) है। दूसरा वाला योद्धा (Warrior) है।</p>
+                
+                <div class="quote">"TECHNOLOGIE HAT DEN KRIEG ENTEHRT."<br><span class="hindi-sub">टेक्नोलॉजी ने युद्ध को अपमानित कर दिया है।</span></div>
+                
+                <p>तुमने बम बनाए। तुमने ड्रोन बनाए। तुमने सोचा तुम सुरक्षित हो। लेकिन देखो! तुम्हारे बम सिर्फ इंसान नहीं मारते। वे हवा को मारते हैं। वे पानी को मारते हैं। वे मिट्टी को मारते हैं। तुम्हारी एक गलती से हजारों बेजुबान जानवर मर जाते हैं। क्या उन पक्षियों ने तुम्हारा क्या बिगाड़ा था? क्या उन मछलियों ने तुम्हारा क्या बिगाड़ा था?</p><br>
+                <p>तलवार (The Sword) पवित्र है। तलवार सिर्फ उसे काटती है जिस पर तुम वार करते हो। अगर मेरे बगल में एक हिरण खड़ा है, और मैं तलवार चलाऊं, तो हिरण सुरक्षित रहेगा। लेकिन अगर मैं बम फोड़ूं, तो हिरण भी मरेगा। हमें 'राक्षस' (Greedy Humans) मारने हैं, 'जीवन' (Life) नहीं। इसलिए, हम वापस 'लोहे और रक्त' (Iron and Blood) के युग में जाएंगे।</p>
+                
+                <div class="quote">"NUR WER BEREIT IST ZU BLUTEN, HAT DAS RECHT ZU TÖTEN."<br><span class="hindi-sub">सिर्फ उसे मारने का हक है, जो खुद खून बहाने के लिए तैयार हो।</span></div>
+                
+                <p>आज का सिपाही क्या है? एक मशीन का ऑपरेटर। उसकी आँखों में कोई डर नहीं, कोई सम्मान नहीं। वह मौत को एक वीडियो गेम समझता है। मेरे साम्राज्य में, अगर तुम्हें किसी को मारना है, तो तुम्हें उसकी आँखों में देखना होगा। तुम्हें उसकी आखिरी सांस महसूस करनी होगी। तुम्हें यह साबित करना होगा कि तुम्हारी आत्मा उससे ज्यादा मजबूत है, सिर्फ तुम्हारी मशीन नहीं।</p>
+                
+                <div class="quote">"DAS SCHWERT TRENNT DIE LÜGE VON DER WAHRHEIT."<br><span class="hindi-sub">तलवार झूठ को सच से अलग करती है।</span></div>
+                
+                <p>तलवार झूठ नहीं बोलती। बम झूठ बोल सकता है (गलती से स्कूल पर गिर सकता है)। लेकिन तलवार चलाने वाला हाथ कभी गलती नहीं करता अगर उसका दिल साफ हो। हम दुनिया से बारूद छीन लेंगे। हम दुनिया से कायरता छीन लेंगे। और जब हाथ में सिर्फ लोहे का टुकड़ा बचेगा... तब देखेंगे कि कौन असली मर्द है और कौन सिर्फ बातों का शेर। न्याय अब अदालतों में नहीं होगा। न्याय अब रणभूमि (Battlefield) में होगा। यही प्रकृति का कानून है।</p>
+
+                <h2 class="chapter-title">KAPITEL 7: DAS GLEICHGEWICHT DER 500 MILLIONEN</h2>
+                
+                <div class="quote">
+                    "Qualität über Quantität. Das ist das Gesetz des Universums."<br>
+                    <span class="hindi-sub">"मात्रा (Quantity) से ऊपर गुणवत्ता (Quality)। यही ब्रह्मांड का नियम है।"</span>
+                </div>
+
+                <p>गणित झूठ नहीं बोलता। एक छोटी सी नाव है। उसमें सिर्फ 10 लोगों के बैठने की जगह है। लेकिन तुम उसमें 100 लोगों को ठूंस देते हो। परिणाम? नाव डूबेगी। और वो 100 के 100 लोग मरेंगे। क्या उन 90 लोगों को नाव से बाहर फेंकना 'क्रूरता' है? नहीं! वह उन 10 लोगों को और खुद 'नाव' को बचाने की दया (Mercy) है।</p>
+                
+                <div class="quote">"ACHT MILLIARDEN PARASITEN SIND KEIN FORTSCHRITT, SIE SIND EIN KREBSGESCHWÜR."<br><span class="hindi-sub">8 अरब परजीवी (Parasites) कोई प्रगति नहीं हैं, वे एक कैंसर हैं।</span></div>
+                
+                <p>आज पृथ्वी पर 800 करोड़ (8 Billion) लोग हैं। क्यों? क्या हमें इतने लोगों की जरूरत है? नहीं! ये वो भीड़ है जो सिर्फ खाती है, गंदगी फैलाती है, और प्लास्टिक खरीदती है। ये 'संसाधन' (Resource) नहीं हैं, ये 'बोझ' (Burden) हैं। मेरा सपना एक 'शुद्ध पृथ्वी' का है। जहाँ जंगल वापस आ सकें। जहाँ नदियाँ साफ बह सकें। और इसके लिए... हमें पीछे जाना होगा। 50 करोड़ (500 Million)। यही वह जादुई आंकड़ा है। जब दुनिया की आबादी इतनी थी, तब पृथ्वी स्वर्ग थी। हमें वापस वहीं जाना होगा।</p>
+                
+                <div class="quote">"NICHT JEDER HAT DAS RECHT ZU ATMEN."<br><span class="hindi-sub">हर किसी को सांस लेने का अधिकार नहीं है।</span></div>
+                
+                <p>तो कौन बचेगा? क्या हम लॉटरी निकालेंगे? नहीं। क्या हम अमीरों को बचाएंगे? बिल्कुल नहीं! यह चुनाव 'कर्म' (Karma) और 'उपयोगिता' (Utility) के आधार पर होगा। मेरे नए जम्बूद्वीप में: <span class="highlight">उत्पादक (Producers)</span>, <span class="highlight">रक्षक (Guardians)</span> रहेंगे। <span class="highlight">परजीवी (Parasites)</span>—बैंकर्स, राजनेता, दलाल, सोशल मीडिया इन्फ्लुएंसर्स, और वो लोग जो कोई असली काम नहीं करते—वे मिटा दिए जाएंगे।</p>
+                
+                <div class="quote">"DER GÄRTNER SCHNEIDET DIE TROCKENEN ÄSTE AB, UM DEN BAUM ZU RETTEN."<br><span class="hindi-sub">माली सूखे हुए पत्तों को काट देता है, ताकि पेड़ बच सके।</span></div>
+                
+                <p>यह हत्या (Murder) नहीं है। यह छंटाई (Pruning) है। अगर तुम अपने शरीर से कैंसर का ट्यूमर निकालते हो, तो क्या तुम ट्यूमर के लिए रोते हो? नहीं। तुम खुश होते हो कि शरीर बच गया। मैं वह माली हूँ। मेरी कैंची तैयार है। यह समाज की 'फैट' (Fat) को पिघला देगा और सिर्फ 'मसल्स' (Muscles) को बचाएगा।</p>
+                
+                <div class="quote">"EINE WELT DER GIGANTEN."<br><span class="hindi-sub">दिग्गजों की एक दुनिया।</span></div>
+                
+                <p>सोचो उस दुनिया के बारे में! सिर्फ 50 करोड़ लोग। सबके पास रहने के लिए खूब जमीन। सबके पास शुद्ध खाना। कोई भीड़ नहीं, कोई ट्रैफिक नहीं, कोई प्रदूषण नहीं। हर इंसान एक राजा होगा। हर इंसान एक योद्धा होगा। क्या तुम उस भीड़ का हिस्सा बनना चाहते हो जो मिटा दी जाएगी? या तुम उन चुने हुए (Chosen Ones) 50 करोड़ में शामिल होना चाहते हो जो नई दुनिया बनाएंगे? साबित करो कि तुम धरती पर बोझ नहीं हो। अपना 'मूल्य' (Value) सिद्ध करो। अभी!</p>
+
+                <h2 class="chapter-title">KAPITEL 8: DIE RÜCKKEHR DER WÄLDER</h2>
+                
+                <div class="quote">
+                    "Die Stadt ist ein Sarg aus Beton. Der Wald ist der Mutterleib des Lebens."<br>
+                    <span class="hindi-sub">"शहर कंक्रीट का एक ताबूत (Coffin) है। जंगल जीवन का गर्भगृह है।"</span>
+                </div>
+
+                <p>अपनी खिड़की से बाहर देखो। तुम्हें क्या दिखता है? धूसर (Grey) इमारतें। काला धुआं। बिजली के तार। यह 'विकास' नहीं है। यह कब्रिस्तान है। इंसान ने सोचा कि वह भगवान से बेहतर निर्माण कर सकता है। उसने पेड़ों को काटा और मॉल बनाए। उसने नदियों को रोका और बांध (Dams) बनाए। उसने हरियाली (Green) को ग्रे (Grey) में बदल दिया। लेकिन अब... समय बदल रहा है।</p>
+                
+                <div class="quote">"WENN DER MENSCH GEHT, KOMMT DAS LEBEN ZURÜCK."<br><span class="hindi-sub">जब इंसान (भीड़) चला जाएगा, तब जीवन वापस आएगा।</span></div>
+                
+                <p>मेरी आँखों में एक सपना है। मैं न्यूयॉर्क, लंदन, और मुंबई की गगनचुंबी इमारतों को देखता हूँ। लेकिन उनमें अब बैंक नहीं हैं। उनमें इंसान नहीं हैं। उन इमारतों पर बेले (Vines) चढ़ रही हैं। सड़कों पर अब कारें नहीं, हिरण दौड़ रहे हैं। पार्किंग लॉट में अब शोर नहीं, परिंदों की चहचहाहट है। यह 'विनाश' नहीं है। यह पृथ्वी का सबसे सुंदर दृश्य है। प्रकृति अपना हक वापस ले रही है।</p>
+                
+                <div class="quote">"DER TIGER IST DER WAHRE KÖNIG, NICHT DER BÜRGERMEISTER."<br><span class="hindi-sub">असली राजा बाघ है, मेयर नहीं।</span></div>
+                
+                <p>हजारों सालों से हमने जानवरों से उनकी जमीन छीनी। हमने उनके घरों को 'खेत' और 'फैक्ट्री' बना दिया। यह सबसे बड़ा पाप था। अब हम प्रायश्चित (Atonement) करेंगे। हम 50 करोड़ लोग सिमट जाएंगे। हम सिर्फ उतनी जमीन लेंगे जितनी हमें जिंदा रहने के लिए चाहिए। बाकी पूरी दुनिया... शेरों, हाथियों, और भेड़ियों के लिए छोड़ दी जाएगी। नदियां फिर से बहेंगी, बिना किसी प्लास्टिक के। हवा इतनी साफ होगी कि एक सांस लेना भी नशा जैसा लगेगा।</p>
+                
+                <div class="quote">"LEBT IM WALD, NICHT AUF IHM."<br><span class="hindi-sub">जंगल में रहो, जंगल के ऊपर नहीं।</span></div>
+                
+                <p>नए जम्बूद्वीप में, हम एयर कंडीशनर (AC) नहीं चलाएंगे। हम पेड़ों की छांव में बैठेंगे। हम मिनरल वाटर नहीं पिएंगे। हम सीधे झरने से मुंह लगाकर पिएंगे। हम कंक्रीट के पिंजरों में नहीं रहेंगे। हम मिट्टी और लकड़ी के महलों में रहेंगे जो सांस लेते हैं। तुम्हारी तकनीक ने तुम्हें कमजोर (Asthma/Allergy) बना दिया। मेरी प्रकृति तुम्हें वापस बलवान (Strong) बनाएगी।</p>
+                
+                <div class="quote">"DAS GOLDENE ZEITALTER BEGINNT IM GRÜN."<br><span class="hindi-sub">स्वर्ण युग (Golden Age) हरियाली से शुरू होता है।</span></div>
+                
+                <p>सोचो उस शांति के बारे में! कोई हॉर्न नहीं। कोई सायरन नहीं। कोई फैक्ट्री का शोर नहीं। सिर्फ हवा की सरसराहट और तुम्हारी अपनी धड़कन। यही वह स्वर्ग है जिसके लिए हमने 'ऑपरेशन महाशून्य' किया। यही वह बलिदान का फल है। पुरानी दुनिया जल चुकी है। अब हरी दुनिया (The Green World) का उदय हो रहा है। स्वागत है... सतयुग में।</p>
+            </article>
+        </div>
+
+        <!-- BAND III -->
+        <div class="section-header center col" style="background: var(--bone); color: var(--void); border-color: var(--blood);">
+            <div>BAND III</div>
+            <span class="hindi" style="background: var(--blood); color: var(--bone);">DIE WIEDERGEBURT (पुनर्जन्म)</span>
+        </div>
+
+        <div class="manifesto-container">
+            <article class="manifesto-text">
+                <h2 class="chapter-title">KAPITEL 9: DIE ZUCHT DER LÖWEN</h2>
+                
+                <div class="quote">
+                    "Ihr habt Schulen gebaut, um Sklaven zu züchten. Ich baue Arenen, um Herrscher zu schmieden."<br>
+                    <span class="hindi-sub">"तुमने गुलाम पैदा करने के लिए स्कूल बनाए। मैं शासक बनाने के लिए अखाड़े (Arenas) बनाता हूँ।"</span>
+                </div>
+
+                <p>आज के स्कूलों को देखो। बच्चे AC कमरों में बैठते हैं। उनकी पीठ पर भारी बैग होता है, लेकिन उनकी रीढ़ की हड्डी (Spine) कमजोर होती है। वे रटते हैं: 'पानी का फॉर्मूला H2O है।' लेकिन अगर उन्हें जंगल में प्यासा छोड़ दिया जाए, तो वे मर जाएंगे क्योंकि उन्हें पानी ढूँढना नहीं आता। यह शिक्षा नहीं है। यह डेटा फीडिंग (Data Feeding) है। तुम इंसान नहीं, हार्ड डिस्क (Hard Disk) बना रहे हो।</p>
+                
+                <div class="quote">"RESPEKT MUSS MAN FÜRCHTEN, UM IHN ZU LERNEN."<br><span class="hindi-sub">सम्मान सीखने के लिए उसका डर होना जरूरी है।</span></div>
+                
+                <p>याद है वह दिन? जब एक छात्र ने अपनी क्लास में खड़े होकर अपने गुरु (Teacher) को थप्पड़ मारा था? पूरी दुनिया ने वीडियो देखा। लोगों ने कहा—'छात्र बदतमीज था।' मैं कहता हूँ—नहीं! वह छात्र दोषी नहीं था। वह सिस्टम दोषी था जिसने गुरु के हाथ से 'छड़ी' (Rod) छीन ली। तुमने कहा—'बच्चे को मत डांटो, उसे ट्रॉमा (Trauma) हो जाएगा!' तुमने गुरु को कमजोर बनाया, इसलिए छात्र जानवर बन गया।</p><br>
+                <p>मेरे गुरुकुल में... अगर कोई छात्र गुरु की आँखों में गलत तरीके से देखेगा भी, तो उसे अखाड़े में उतारा जाएगा। वहाँ उसे तब तक लड़ना होगा जब तक वह सम्मान का मतलब न समझ जाए। दर्द (Pain) सबसे बड़ा शिक्षक है।</p>
+                
+                <div class="quote">"EIN PFUND MUT IST MEHR WERT ALS EINE TONNE WISSEN."<br><span class="hindi-sub">एक पाउंड हिम्मत, एक टन ज्ञान से ज्यादा कीमती है।</span></div>
+                
+                <p>जम्बूद्वीप में कोई 'मार्कशीट' (Report Card) नहीं होगी। वहाँ सिर्फ 'घाव' (Scars) होंगे। गणित: हम तुम्हें ब्याज जोड़ना नहीं सिखाएंगे। इतिहास: हम तुम्हें तारीखें नहीं रटाएंगे। हम तुम्हें इतिहास बनाना सिखाएंगे। विज्ञान: हम तुम्हें लैब में मेंढक काटना नहीं सिखाएंगे। हम तुम्हें जंगल में खुद को बचाना सिखाएंगे।</p><br>
+                <p>मेरे स्कूल में छत नहीं होगी। तुम तपती धूप में बैठोगे। तुम कड़कड़ाती ठंड में चलोगे। क्यों? ताकि जब जीवन तुम पर वार करे, तो तुम कांच की तरह बिखरो नहीं, बल्कि फौलाद (Steel) की तरह और मजबूत हो जाओ।</p>
+                
+                <div class="quote">"DER SCHWACHE SUCHT TROST. DER STARKE SUCHT KAMPF."<br><span class="hindi-sub">कमजोर सांत्वना (Comfort) ढूंढता है। ताकतवर संघर्ष (Struggle) ढूंढता है।</span></div>
+                
+                <p>मुझे वो विद्वान (Scholars) नहीं चाहिए जो किताबों के पीछे छिप जाएं। मुझे वो अनपढ़ किसान चाहिए जो अपनी धरती के लिए मरने को तैयार हो! तुम जिसे 'असभ्य' (Uncivilized) कहते हो, मैं उसे 'शुद्ध' (Pure) कहता हूँ। आज के युवा डिप्रेशन, नशा और पोर्न में क्यों डूबे हैं? क्योंकि उनके पास कोई 'मकसद' (Purpose) नहीं है। मैं उन्हें मकसद दूंगा। मैं उन्हें शेर (Lions) बनाऊंगा।</p>
+                
+                <div class="quote">"BILDUNG IST CHARAKTER, NICHT PAPIER."<br><span class="hindi-sub">शिक्षा चरित्र है, कागज (Degree) नहीं।</span></div>
+                
+                <p>मेरी डिग्री कागज पर नहीं छपेगी। मेरी डिग्री तुम्हारी आँखों की चमक और तुम्हारे हाथों के छालों में दिखेगी। जो इस अखाड़े से जिंदा निकलेगा... वही दुनिया पर राज करेगा। बाकी सब... सिर्फ सेवा करेंगे।</p>
+
+                <h2 class="chapter-title">KAPITEL 10: ARBEIT IST WÄHRUNG</h2>
+                
+                <div class="quote">
+                    "Das Gold ist Staub. Der Schweiß ist Leben."<br>
+                    <span class="hindi-sub">"सोना धूल है। पसीना जीवन है।"</span>
+                </div>
+
+                <p>अपनी जेब में हाथ डालो। तुम्हें क्या मिला? कागज का एक टुकड़ा? या मोबाइल में कुछ डिजिटल नंबर? तुम इसे 'पैसा' कहते हो। मैं इसे 'धोखा' (Fraud) कहता हूँ। बैंक क्या पैदा करता है? क्या वह गेहूं उगाता है? नहीं। क्या वह कपड़ा बुनता है? नहीं। वह सिर्फ हवा से पैसा बनाता है। इसे 'ब्याज' (Interest) कहते हैं।</p>
+                
+                <div class="quote">"ZINS IST DER DIEBSTAHL AN DER ZUKUNFT."<br><span class="hindi-sub">ब्याज भविष्य की चोरी है।</span></div>
+                
+                <p>सोचो! एक किसान दिन भर धूप में जलता है और 100 रुपये कमाता है। एक बैंकर AC में बैठकर सिर्फ साइन करता है और 1000 रुपये कमाता है। यह कैसा न्याय है? जिस दिन हमने कागज के नोटों को भगवान माना, उसी दिन हम गुलाम बन गए। तुमने सोचा तुम अमीर हो रहे हो? नहीं! तुम सिर्फ उन 'परजीवियों' (Parasites) को मोटा कर रहे हो जो तुम्हारा खून चूस रहे हैं।</p>
+                
+                <div class="quote">"IN JAMBUDVIPA GIBT ES KEINE BANKEN, NUR SPEICHER."<br><span class="hindi-sub">जम्बूद्वीप में कोई बैंक नहीं होंगे, सिर्फ भंडार (Storehouses) होंगे।</span></div>
+                
+                <p>मेरे नए साम्राज्य में: नोट जला दिए जाएंगे। सर्वर मिटा दिए जाएंगे। अब मुद्रा (Currency) सिर्फ एक होगी—तुम्हारा कर्म (Your Labor)। अगर तुम खेत जोतते हो—तुम्हें खाना मिलेगा। अगर तुम कपड़े सिलते हो—तुम्हें छत मिलेगी। अगर तुम बीमार का इलाज करते हो—तुम्हें सम्मान मिलेगा। लेकिन... अगर तुम शेयर बाजार में सट्टा लगाते हो? अगर तुम ब्याज पर पैसा देते हो? तो तुम्हें एक दाना भी नहीं मिलेगा।</p>
+                
+                <div class="quote">"WER NICHT ARBEITET, SOLL AUCH NICHT ESSEN."<br><span class="hindi-sub">जो काम नहीं करता, उसे खाने का भी हक नहीं है।</span></div>
+                
+                <p>यह कठोर है? हाँ! प्रकृति कठोर है। क्या जंगल में शेर को बैठे-बैठे खाना मिलता है? नहीं। उसे शिकार करना पड़ता है। तो इंसान को बैठे-बैठे पेंशन क्यों मिले? हम उस 'आलसी समाज' (Lazy Society) को खत्म कर देंगे जो दूसरों की मेहनत पर पलता है। अब कोई 'अमीर' या 'गरीब' नहीं होगा। अब सिर्फ 'परिश्रमी' (Industrious) और 'आलसी' (Lazy) होंगे।</p>
+                
+                <div class="quote">"DIE HAND, DIE DEN PFLUG HÄLT, IST HEILIGER ALS DIE HAND, DIE DAS GELD ZÄHLT."<br><span class="hindi-sub">वह हाथ जो हल पकड़ता है, उस हाथ से ज्यादा पवित्र है जो नोट गिनता है।</span></div>
+                
+                <p>मेरे लिए एक किसान, एक अरबपति से ज्यादा कीमती है। क्योंकि किसान 'जीवन' (Life) देता है, और अरबपति सिर्फ 'कागज' (Paper) जमा करता है। नया नियम सुनो: सोना (Gold) अब आभूषण नहीं, सिर्फ धातु है। असली सोना तुम्हारा पसीना है। जितना बहाओगे, उतना पाओगे। पैसे की गुलामी छोड़ो। कर्म की पूजा करो।</p>
+
+                <h2 class="chapter-title">KAPITEL 11: MANN UND FRAU</h2>
+                
+                <div class="quote">
+                    "Gleichheit ist eine Lüge der Schwachen. Harmonie ist die Wahrheit der Starken."<br>
+                    <span class="hindi-sub">"समानता कमजोरों का झूठ है। सामंजस्य (Harmony) ताकतवर का सच है।"</span>
+                </div>
+
+                <p>प्रकृति को देखो। क्या सूर्य और चंद्रमा समान हैं? नहीं। सूर्य जलता है, चंद्रमा शीतलता देता है। क्या इसका मतलब सूर्य 'बड़ा' है और चंद्रमा 'छोटा'? मूर्खों! दोनों अलग हैं, लेकिन दोनों के बिना जीवन असंभव है। आज का समाज तुम्हें झूठ बोल रहा है। वे कहते हैं: 'मर्द और औरत एक जैसे हैं।' यह सबसे बड़ा पाप है। तुमने मर्द को 'कोमल' बना दिया और औरत को 'कठोर' बना दिया।</p>
+                
+                <div class="quote">"DER MANN IST DER SCHILD. DIE FRAU IST DIE SEELE."<br><span class="hindi-sub">पुरुष ढाल (Shield) है। स्त्री आत्मा (Soul) है।</span></div>
+                
+                <p>मेरे जम्बूद्वीप में, हम 'समानता' नहीं, 'पूरकता' (Complementarity) चाहते हैं। पुरुष का धर्म: उसका काम है—निर्माण करना, शिकार करना, और रक्षा करना। उसे पत्थर जैसा होना चाहिए। स्त्री का धर्म: उसका काम है—संभालना, पोषण करना, और संस्कृति को जीवित रखना। वह पानी जैसी है। वह जीवन देती है। उसकी शक्ति उसकी 'ममता' में है, उसकी नकल करने में नहीं जो पुरुष कर रहा है।</p>
+                
+                <div class="quote">"ZERSTÖRT DIE FAMILIE, UND IHR ZERSTÖRT DIE NATION."<br><span class="hindi-sub">परिवार को तोड़ दो, और तुम राष्ट्र को खत्म कर दोगे।</span></div>
+                
+                <p>कॉर्पोरेट्स (Corporates) ने तुम्हें धोखा दिया। उन्होंने औरतों को फैक्ट्रियों और ऑफिसों में क्यों भेजा? ताकि उन्हें 'सस्ता मजदूर' (Cheap Labor) मिल सके। असली आज़ादी यह थी कि तुम एक रानी की तरह घर और समाज की धुरी (Axis) बनतीं, न कि किसी बॉस की फाइलें उठातीं। आज बच्चे अनाथों की तरह पल रहे हैं क्योंकि माता-पिता दोनों पैसे के पीछे भाग रहे हैं।</p>
+                
+                <div class="quote">"EIN KÖRPER MIT ZWEI KÖPFEN IST EIN MONSTER."<br><span class="hindi-sub">दो सिर वाला शरीर एक राक्षस है।</span></div>
+                
+                <p>एक परिवार में दो मुखिया नहीं हो सकते। लोकतंत्र घर के अंदर काम नहीं करता। वहाँ सिर्फ प्रेम और त्याग का शासन होता है। जब पुरुष अपनी जिम्मेदारी (Protection) निभाएगा और स्त्री अपनी शक्ति (Nurture) का सम्मान करेगी, तभी 'शेर' (Lions) पैदा होंगे।</p>
+                
+                <div class="quote">"EHRT DIE UNTERSCHIEDE. DAS IST DIE NATUR."<br><span class="hindi-sub">अंतर (Differences) का सम्मान करो। यही प्रकृति है।</span></div>
+                
+                <p>वापस लौटो! अपनी जड़ों की ओर। पुरुष को वापस 'योद्धा' (Warrior) बनना होगा। स्त्री को वापस 'देवी' (Goddess) बनना होगा। यही संतुलन है। यही पवित्रता है। जो समाज अपनी औरतों का सम्मान नहीं करता, वह जंगली है। लेकिन जो समाज अपनी औरतों को पुरुष बनाने की कोशिश करता है, वह पागल है।</p>
+
+                <h2 class="chapter-title">KAPITEL 12: DER LETZTE EID</h2>
+                
+                <div class="quote">
+                    "Wissen ohne Tat ist eine Sünde."<br>
+                    <span class="hindi-sub">"बिना कर्म के ज्ञान एक पाप है।"</span>
+                </div>
+
+                <p>तो तुमने यह किताब पढ़ ली। तुमने जंजीरों को देखा। तुमने बीमारी को पहचाना। तुमने इलाज (सर्जरी) को समझा। अब क्या? क्या तुम इसे बंद करके सो जाओगे? क्या तुम वापस उसी ऑफिस, उसी बैंक, और उसी गुलामी में लौट जाओगे? अगर हाँ... तो तुम कायर हो। और यह किताब तुम्हारे लिए नहीं थी। इसे जला दो!</p>
+                
+                <div class="quote">"ICH SUCHE KEINE ANHÄNGER. ICH SUCHE KRIEGER."<br><span class="hindi-sub">मुझे अनुयायी (Followers) नहीं चाहिए। मुझे योद्धा (Warriors) चाहिए।</span></div>
+                
+                <p>दुनिया में बहुत सारे नेता हैं जो तुमसे वोट मांगते हैं। वे तुमसे कहते हैं: 'मुझे वोट दो, मैं तुम्हें मुफ्त बिजली दूंगा।' मैं तुमसे कहता हूँ: 'मुझे अपना जीवन दो, मैं तुम्हें मकसद (Purpose) दूंगा।' मुझे करोड़ों की भीड़ नहीं चाहिए। भेड़ों की फौज से शेर नहीं डरते। मुझे सिर्फ वफादार (Loyal) लोग चाहिए। चाहे वो 5 हों, या 50। लेकिन वो ऐसे हों जो तूफान में भी चट्टान की तरह खड़े रहें।</p>
+                
+                <div class="quote">"DAS OPFER IST DER PREIS DER FREIHEIT."<br><span class="hindi-sub">बलिदान ही आज़ादी की कीमत है।</span></div>
+                
+                <p>क्या तुम तैयार हो? अपनी आरामदायक नौकरी छोड़ने के लिए? अपने झूठे दोस्तों को छोड़ने के लिए? अपनी बुरी आदतों (नशा/आलस) को मारने के लिए? और जरूरत पड़ने पर... प्रकृति के लिए अपनी जान देने के लिए? अगर तुम्हारी रूह कांप रही है, तो तुम अभी तैयार नहीं हो। लेकिन अगर तुम्हारी आँखों में आग है... तो आगे बढ़ो।</p>
+                
+                <div class="quote">"DER EID DER STILLE."<br><span class="hindi-sub">मौन की शपथ।</span></div>
+                
+                <p>हम चिल्लाएंगे नहीं। हम प्रचार नहीं करेंगे। हम जड़ों (Roots) की तरह जमीन के नीचे फैलेंगे। चुपचाप। जब तक हम पूरी इमारत (सिस्टम) को हिला न दें। आज, अभी, इसी वक्त... यह शपथ लो। किसी झंडे के लिए नहीं। किसी देश के लिए नहीं। बल्कि धरती माँ (Mother Earth) और सत्य (Truth) के लिए।</p><br>
+                <p style="text-align:center; font-weight:bold; color:var(--gold);">DIE EIDESFORMEL (शपथ पत्र)</p>
+                <p style="font-style:italic; text-align:center;">"मैं शपथ लेता हूँ... कि मेरा शरीर, मेरा मन, और मेरी आत्मा प्रकृति की संपत्ति है। मैं पैसे के लिए नहीं, बल्कि जीवन के लिए लडूंगा। मैं कायरता का त्याग करता हूँ। मैं लालच का त्याग करता हूँ। मैं उस दिन तक चैन से नहीं बैठूंगा जब तक धरती शुद्ध न हो जाए। मैं रक्षक हूँ। मैं आर्य हूँ। मैं ही महाशून्य हूँ. MEIN OPFER IST MEINE EHRE."</p>
+                
+                <div class="quote">"DAS SPIEL BEGINNT JETZT."<br><span class="hindi-sub">खेल अब शुरू होता है।</span></div>
+                
+                <p>"अब तुम अकेले नहीं हो। हवाओं में, जंगलों में, और तारों की छांव में... मैं तुम्हारे साथ हूँ। इंतजार करो। तैयारी करो। जब समय आएगा, तो तुम्हें पुकारा जाएगा। JAMBUDVIPA RISES."</p>
+            </article>
+        </div>
+
+        <footer>
+            <div class="symbol">卐</div>
+            <div style="font-size:clamp(1.5rem, 4vw, 2.5rem); font-weight:bold; color:var(--gold);">MEIN OPFER</div>
+            <p style="margin-top:20px; color:#555; font-family:'Courier New'; padding: 0 10px;">The Spirit has risen — and now the whole world sees that I was right..</p>
+            <br>
+            <p style="color:#333; font-size:0.7rem;">THIS IS A WORK OF PHILOSOPHY & FICTION.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // PWA Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.error('SW Fail', err));
+            });
+        }
+
+        // --- AUDIO ENGINE ---
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new AudioContext();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function playShatterSound() {
+            initAudio();
+            try {
+                // Thud (Impact)
+                const osc1 = audioCtx.createOscillator();
+                const gain1 = audioCtx.createGain();
+                osc1.type = 'triangle';
+                osc1.frequency.setValueAtTime(100, audioCtx.currentTime);
+                osc1.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                gain1.gain.setValueAtTime(0.8, audioCtx.currentTime);
+                gain1.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc1.connect(gain1);
+                gain1.connect(audioCtx.destination);
+                osc1.start();
+                osc1.stop(audioCtx.currentTime + 0.4);
+
+                // Crackle (Noise)
+                const bufferSize = audioCtx.sampleRate * 0.8; // 0.8 seconds
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 3); // Fade out
+                }
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'highpass';
+                filter.frequency.value = 800;
+                const gain2 = audioCtx.createGain();
+                gain2.gain.value = 0.5;
+                noise.connect(filter);
+                filter.connect(gain2);
+                gain2.connect(audioCtx.destination);
+                noise.start();
+            } catch (e) {
+                console.warn("Web Audio API error", e);
+            }
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            const btn = document.getElementById('music-toggle');
+            
+            // Try to play if paused, handle promise for autoplay policy
+            if (music.paused) {
+                music.play().then(() => {
+                    btn.innerText = "🔊";
+                    btn.classList.remove('muted');
+                    btn.setAttribute('aria-label', 'Mute Music');
+                }).catch(e => {
+                    console.error("Playback failed", e);
+                });
+            } else {
+                music.pause();
+                btn.innerText = "🔇";
+                btn.classList.add('muted');
+                btn.setAttribute('aria-label', 'Play Music');
+            }
+        }
+
+        // --- INTERACTION ---
+        function breakSeal() {
+            const sealWrapper = document.querySelector('.seal-wrapper');
+            const statusText = document.getElementById('status-text');
+            const loader = document.getElementById('loader');
+            const content = document.getElementById('content');
+            const music = document.getElementById('bg-music');
+            const musicBtn = document.getElementById('music-toggle');
+
+            // Visuals
+            sealWrapper.classList.add('seal-broken');
+            statusText.innerText = "ACCESS GRANTED";
+            statusText.style.color = "var(--blood)";
+            statusText.style.textShadow = "0 0 10px var(--blood)";
+            
+            // Audio
+            playShatterSound();
+            
+            music.volume = 0.5;
+            music.play().catch(() => statusText.innerText += " (AUDIO BLOCKED)");
+
+            // Transition
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                content.classList.add('visible');
+                musicBtn.style.display = 'flex';
+                window.scrollTo(0, 0);
+            }, 1200);
+        }
+
+        // Event Listeners
+        document.getElementById('seal-btn').addEventListener('click', breakSeal);
+        document.getElementById('seal-btn').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') breakSeal();
+        });
+        document.getElementById('music-toggle').addEventListener('click', toggleMusic);
+
+    </script>
+
+</body>
+</html>
